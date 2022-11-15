@@ -52,7 +52,7 @@ class Deck:
 
     # 3) Shuffle the cards
     def shuffle(self):
-        if len(self.cards > 1):
+        if len(self.cards) > 1:
             random.shuffle(self.cards)
 
         return self.cards
@@ -152,12 +152,12 @@ class Game:
 
         while games_to_play <= 0:
             try:
-                games_to_play = int(
-                    input('How many games do you want to play?'))
+                games_to_play = int(input('How many games do you want to play?'))
             except:
                 print('You must enter a number!')
+
         while game_number < games_to_play:
-            games_to_play += 1
+            game_number += 1
 
             deck = Deck()
             deck.shuffle()
@@ -166,8 +166,8 @@ class Game:
             dealer_hand = Hand(dealer=True)
 
             for i in range(2):
-                player_hand.play.add_card(deck.choose(1))
-                dealer_hand.play.add_card(deck.choose(1))
+                player_hand.add_card(deck.choose(1))
+                dealer_hand.add_card(deck.choose(1))
 
             print()
             print('*' * 30)
@@ -211,9 +211,7 @@ class Game:
 
             self.check_winner(player_hand, dealer_hand, True)
 
-    print('Thanks for playing :)')
-
-
+        print('Thanks for playing :)')
 
     def check_winner(self, player_hand, dealer_hand, game_over=False):
         if not game_over:
@@ -233,14 +231,14 @@ class Game:
                 print('Dealer got a blackjack! You lost!')
                 return True
             else:
-                if player_hand.get_value() > dealer_hand.getvalue():
+                if player_hand.get_value() > dealer_hand.get_value():
                     print('You win!')
-                elif player_hand.get_value() == dealer_hand.getvalue():
+                elif player_hand.get_value() == dealer_hand.get_value():
                     print('It is a tie!')
                 else:
                     print('Dealer wins!')
                 return True
-
+                
         return False
 
 

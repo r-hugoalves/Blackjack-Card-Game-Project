@@ -1,5 +1,17 @@
 import random
 
+class Card:
+    def __init__(self, suit, rank):
+        self.suit = suit
+        self.rank = rank
+    def __str__(self):
+        return self.rank['rank'] + ' of ' + self.suit
+        # we can also write:
+        # return f"{self.rank['rank']} of {self.suit}"
+
+#card1 = Card('hearts', {'rank': 'A', 'value': 1})
+#print(card1)
+
 class Deck:
 
     def __init__(self):
@@ -67,26 +79,16 @@ class Deck:
     #print(cards_chosen)
     #print(cards_chosen[1]['value'])
 
-deck1 = Deck()
-print('\nTesting deck')
-print(deck1.cards)
+# TESTING THE CLASS DECK # 
 
-deck2 = Deck()
-deck2.shuffle
-print('\nTesting deck')
-print(deck2.cards)
+#deck1 = Deck()
+#print('\nTesting deck')
+#print(deck1.cards)
 
-class Card:
-    def __init__(self, suit, rank):
-        self.suit = suit
-        self.rank = rank
-    def __str__(self):
-        return self.rank['rank'] + ' of ' + self.suit
-        # we can also write:
-        # return f"{self.rank['rank']} of {self.suit}"
-
-card1 = Card('hearts', {'rank': 'A', 'value': 1})
-print(card1)
+#deck2 = Deck()
+#deck2.shuffle
+#print('\nTesting deck')
+#print(deck2.cards)
 
 class Hand:
     def __init__(self, dealer=False):
@@ -96,10 +98,45 @@ class Hand:
 
     def add_card(self, card_list):
         self.cards.extend(card_list)
+    
+    def calculate_value(self):
+        self.value = 0
+        has_ace = False
 
-deck = Deck()
-deck.shuffle
+        for card in self.cards:
+            card_value = int(card.rank['value'])
+            self.value += card_value
+            if card.rank['rank'] == 'A':
+                has_ace = True
+        
+        if has_ace and self.value > 21:
+            self.value -= 10
 
-hand = Hand()
-hand.add_card(deck(2))
-print(hand.cards[0])
+    def get_value(self):
+        self.calculate_value()
+        return self.value
+    
+    def is_blackjack(self):
+        return self.get_value() == 21
+
+    def display(self, show_all_dealer_cards=False):
+        print(f'''{"Dealer's" if self.dealer else "Your"} hand: ''')
+        for index, card in enumerate(self.cards):
+            if index == 0 and self.dealer and not show_all_dealer_cards and not self.is_blackjack():
+                print('Hidden')
+            else:
+                print(card)
+
+        if not self.dealer:
+            print(f'Value: {self.get_value()}')
+
+# TESTING THE CLASS HAND # 
+
+#deck = Deck()
+#deck.shuffle
+
+#hand = Hand()
+#hand.add_card(deck.choose(2))
+#print(f'{hand.cards[0]} and,\n{hand.cards[1]}')
+
+#hand.display()
